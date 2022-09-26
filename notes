@@ -1,0 +1,4 @@
+npx pod-install ios
+npm start -- --rest-cache
+react-native run-ios
+npm run ios
