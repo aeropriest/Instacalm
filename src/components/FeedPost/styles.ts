@@ -39,19 +39,9 @@ export default StyleSheet.create({
     },
     icon: {
       marginHorizontal: 5,
-      color: colors.colors.black,
     },
     footer: {
       padding: 10,
-    },
-    comment: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    commentText: {
-      color: 'black',
-      flex: 1,
-      lineHeight: 18,
     },
   });
   
