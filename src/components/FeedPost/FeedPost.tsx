@@ -9,11 +9,15 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native';
 import styles from './styles';
-import Comment from '../Comment/';
+import Comment from '../Comment';
 import DoublePressable from '../DoublePressable/DoublePressable';
+import Carousel from '../Carousel';
+import VideoPlayer from '../VideoPlayer';
 
 interface IFeedPost {
   post: {
+    video: any;
+    images: any;
     id: string;
     description: string;
     user: {
@@ -32,6 +36,26 @@ export default function FeedPost({ post }: IFeedPost) {
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(currentValue => !currentValue);
   };
+
+
+  let content = null;
+
+  if (post.image) {
+    content = (
+      <DoublePressable onDoublePress={toggleLiked}>
+        <Image
+          source={{
+            uri: post.image,
+          }}
+        style={styles.image}
+        />
+      </DoublePressable>
+    );
+  } else if (post.images) {
+    content = <Carousel images={post.images} />;
+  } else if (post.video) {
+    content = (<DoublePressable onDoublePress={toggleLiked}><VideoPlayer uri={post.video} /></DoublePressable>);
+  }
 
   return (
     <SafeAreaView style={[styles.container]}>
@@ -53,25 +77,18 @@ export default function FeedPost({ post }: IFeedPost) {
         </View>
 
         {/* Content */}
-        <DoublePressable onDoublePress={toggleLiked}>
-          <Image
-            source={{
-              uri: post.image,
-            }}
-            style={styles.image}
-          />
-        </DoublePressable>
+        <DoublePressable onDoublePress={toggleLiked}>{content}</DoublePressable>
 
         {/* Footer */}
         <View style={styles.footer}>
           <View style={styles.iconContainer}>
             <Pressable onPress={toggleLiked}>
-            <AntDesign              
-              name={isLiked ? 'heart' : 'hearto'}
-              size={24}
-              style={styles.icon}
-              color={isLiked ? colors.colors.accent : colors.colors.black}
-            />
+              <AntDesign
+                name={isLiked ? 'heart' : 'hearto'}
+                size={24}
+                style={styles.icon}
+                color={isLiked ? colors.colors.accent : colors.colors.black}
+              />
             </Pressable>
             <Ionicons
               name="chatbubble-outline"
