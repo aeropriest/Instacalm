@@ -54,7 +54,11 @@ export default function FeedPost({ post }: IFeedPost) {
   } else if (post.images) {
     content = <Carousel images={post.images} />;
   } else if (post.video) {
-    content = (<DoublePressable onDoublePress={toggleLiked}><VideoPlayer uri={post.video} /></DoublePressable>);
+    content = (
+      <DoublePressable onDoublePress={toggleLiked}>
+        <VideoPlayer uri={post.video} />
+      </DoublePressable>
+    );
   }
 
   return (
