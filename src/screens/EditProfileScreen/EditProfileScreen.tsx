@@ -1,11 +1,12 @@
+import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import {useForm, Controller} from 'react-hook-form';
+import {launchImageLibrary} from 'react-native-image-picker';
+
 /* eslint-disable react/react-in-jsx-scope */
 import UserData from '../../assets/data/user.json';
-import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
-import {useForm, Controller} from 'react-hook-form';
 import {IUser} from '../../types/models';
-import {useDebugValue} from 'react';
 
 const URL_REGEX =
   /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i;
@@ -81,11 +82,30 @@ export default function EditProfileScreen() {
   const onSubmit = (data: IEditableUser) => {
     console.warn(data);
   };
-
+  const changePhoto = () => {
+    const options = {
+      noData: true,
+    };
+    launchImageLibrary(options, (response) => {
+      console.log(response);
+    });
+  };
+  const onChangePhoto = () => {
+    launchImageLibrary(
+      {mediaType: 'photo'},
+      ({didCancel, errorCode, errorMessage, assets}) => {
+        if (!didCancel && !errorCode) {
+          control.log(assets);
+        }
+      },
+    );
+  };
   return (
     <View style={styles.page}>
       <Image source={{uri: UserData.image}} style={styles.avatar} />
-      <Text style={styles.textButton}>Change Profile Photo</Text>
+      <Text onPress={changePhoto} style={styles.textButton}>
+        Change Profile Photo
+      </Text>
       <CustomInput
         name="name"
         control={control}
